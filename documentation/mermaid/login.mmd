@@ -1,0 +1,20 @@
+%% Login & Authorization Flow
+flowchart TD
+    classDef start fill:#d9f2ff,stroke:#0277bd,stroke-width:2px;
+    classDef action fill:#f0f4c3,stroke:#7cb342,stroke-width:2px;
+    classDef decision fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef end fill:#e8eaf6,stroke:#3949ab,stroke-width:2px;
+
+    A[Mulai]:::start --> B[Halaman Login]:::action
+    B --> C{Input username & password?}:::decision
+    C -- Kosong --> X1[Info: lengkapi kredensial]:::action
+    C -- Terisi --> D[BCrypt verifikasi password]:::action
+    D --> E{Valid?}:::decision
+    E -- Tidak --> X2[Error: kredensial salah]:::action
+    E -- Ya --> F[Ambil role & preferensi pengguna]:::action
+    F --> G{Role?}:::decision
+    G -- Admin --> H[Load Dashboard Admin]:::action
+    G -- Petugas --> I[Load Dashboard Petugas]:::action
+    H --> J[Gunakan fitur sesuai role]:::action
+    I --> J
+    J --> Z[Monitoring aktivitas & audit trail]:::end

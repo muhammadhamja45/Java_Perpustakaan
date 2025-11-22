@@ -1,0 +1,20 @@
+%% Borrowing Flow
+flowchart TD
+    classDef start fill:#d9f2ff,stroke:#0277bd,stroke-width:2px;
+    classDef action fill:#f0f4c3,stroke:#7cb342,stroke-width:2px;
+    classDef decision fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef end fill:#e8eaf6,stroke:#3949ab,stroke-width:2px;
+
+    A[Mulai Peminjaman]:::start --> B[Input anggota & buku]:::action
+    B --> C{Anggota aktif?}:::decision
+    C -- Tidak --> X1[Blokir & minta aktivasi]:::action
+    C -- Ya --> D{Stok buku tersedia?}:::decision
+    D -- Tidak --> X2[Informasikan stok habis]:::action
+    D -- Ya --> E[Hitung batas pinjam & tanggal kembali]:::action
+    E --> F[Catat transaksi pinjam]:::action
+    F --> G[Kurangi stok buku]:::action
+    G --> H{Butuh bukti cetak?}:::decision
+    H -- Ya --> I[Generate bukti peminjaman]:::action
+    H -- Tidak --> J[Update dashboard & riwayat]:::action
+    I --> J
+    J --> Z[Selesai]:::end

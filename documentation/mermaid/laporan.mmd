@@ -1,0 +1,19 @@
+%% Reporting Flow
+flowchart TD
+    classDef start fill:#d9f2ff,stroke:#0277bd,stroke-width:2px;
+    classDef action fill:#f0f4c3,stroke:#7cb342,stroke-width:2px;
+    classDef decision fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef end fill:#e8eaf6,stroke:#3949ab,stroke-width:2px;
+
+    A[Mulai Laporan]:::start --> B[Pilih rentang tanggal & tipe laporan]:::action
+    B --> C[Validasi filter & akses role]:::action
+    C --> D[Query data transaksi]:::action
+    D --> E{Data ditemukan?}:::decision
+    E -- Tidak --> X1[Info: tidak ada data]:::action
+    E -- Ya --> F{Format?}:::decision
+    F -- PDF --> G[JasperReports render PDF]:::action
+    F -- Excel --> H[Apache POI generate XLSX]:::action
+    G --> I[Simbolkan nama file & lokasi arsip]:::action
+    H --> I
+    I --> J[Audit trail (pengunduh, waktu, filter)]:::action
+    J --> Z[Selesai]:::end
