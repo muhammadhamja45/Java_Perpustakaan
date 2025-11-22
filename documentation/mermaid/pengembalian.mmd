@@ -1,0 +1,22 @@
+%% Return & Fine Flow
+flowchart TD
+    classDef start fill:#d9f2ff,stroke:#0277bd,stroke-width:2px;
+    classDef action fill:#f0f4c3,stroke:#7cb342,stroke-width:2px;
+    classDef decision fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef end fill:#e8eaf6,stroke:#3949ab,stroke-width:2px;
+
+    A[Mulai Pengembalian]:::start --> B[Pilih transaksi aktif]:::action
+    B --> C[Ambil tanggal jatuh tempo]:::action
+    C --> D[Hitung keterlambatan]:::action
+    D --> E{Terlambat?}:::decision
+    E -- Tidak --> F[Set denda = 0]:::action
+    E -- Ya --> G[Hitung denda otomatis]:::action
+    F --> H[Update status transaksi]:::action
+    G --> H
+    H --> I[Kembalikan stok buku]:::action
+    I --> J{Terima pembayaran denda?}:::decision
+    J -- Ya --> K[Catat pembayaran & resi]:::action
+    J -- Tidak --> L[Tagih kemudian / simpan piutang]:::action
+    K --> M[Perbarui dashboard & laporan]:::action
+    L --> M
+    M --> Z[Selesai]:::end

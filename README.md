@@ -66,6 +66,7 @@ Setelah import database:
 
 ## 📖 Dokumentasi Lengkap
 
+- **[documentation/README.md](documentation/README.md)** - Pusat dokumentasi baru yang modern (ringkasan arsitektur & alur kerja)
 - **[DOKUMENTASI_LENGKAP.md](DOKUMENTASI_LENGKAP.md)** - Dokumentasi lengkap dan panduan penggunaan
 - **[docs/ERD_BISNIS.md](docs/ERD_BISNIS.md)** - ERD Bisnis dan Use Case Diagram
 - **[docs/ERD_DATABASE.md](docs/ERD_DATABASE.md)** - ERD Database dan Relasi Tabel
