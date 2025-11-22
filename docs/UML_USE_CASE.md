@@ -216,3 +216,4 @@
 | UC-08 | Lihat Dashboard | Admin, Petugas | High | Low |
 | UC-09 | Generate Laporan | Admin, Petugas | Medium | High |
 
+
