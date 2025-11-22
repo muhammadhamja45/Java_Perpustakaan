@@ -1,0 +1,137 @@
+================================================================================
+                    ERD DATABASE - SISTEM PERPUSTAKAAN
+                         SMK AL-ASIYAH
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           ENTITY RELATIONSHIP DIAGRAM                     │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                    ┌──────────────┐
+                    │    USERS     │
+                    │              │
+                    │ id_user (PK) │
+                    │ username     │
+                    │ password     │
+                    │ role         │
+                    │ nama_lengkap │
+                    └──────┬───────┘
+                           │
+                           │ 1
+                           │
+                           │ N
+                           │
+        ┌──────────────────┴──────────────────┐
+        │                                       │
+        │                                       │
+┌───────▼──────────────┐              ┌────────▼────────┐
+│   PEMINJAMAN         │              │     BUKU         │
+│                      │              │                 │
+│ id_pinjam (PK)       │              │ id_buku (PK)    │
+│ id_user (FK) ────────┼──────────────┼─► id_buku       │
+│ id_buku (FK) ────────┼──────────────┘                 │
+│ id_siswa (FK) ───────┼──┐           kode_buku         │
+│ id_guru (FK) ────────┼──┼──┐        judul             │
+│ tgl_pinjam           │  │  │        pengarang        │
+│ tgl_kembali          │  │  │        penerbit         │
+│ status_pinjam        │  │  │        tahun            │
+└──────┬───────────────┘  │  │        kategori         │
+       │                   │  │        stok             │
+       │ 1                 │  │        lokasi_rak       │
+       │                   │  │        created_at      │
+       │ N                 │  │                        │
+       │                   │  │                        │
+┌──────▼──────────────┐   │  │                        │
+│  PENGEMBALIAN       │   │  │                        │
+│                     │   │  │                        │
+│ id_kembali (PK)     │   │  │                        │
+│ id_pinjam (FK) ─────┘   │  │                        │
+│ tgl_dikembalikan        │  │                        │
+│ denda                   │  │                        │
+└─────────────────────────┘  │                        │
+                              │                        │
+                    ┌─────────▼────────┐              │
+                    │      SISWA       │              │
+                    │                  │              │
+                    │ id_siswa (PK)    │              │
+                    │ nis              │              │
+                    │ nama             │              │
+                    │ kelas            │              │
+                    │ alamat           │              │
+                    │ no_telp          │              │
+                    │ status           │              │
+                    │ created_at       │              │
+                    └──────────────────┘              │
+                                                      │
+                    ┌─────────▼────────┐              │
+                    │       GURU       │              │
+                    │                  │              │
+                    │ id_guru (PK)     │              │
+                    │ nip              │              │
+                    │ nama             │              │
+                    │ jabatan          │              │
+                    │ alamat           │              │
+                    │ no_telp          │              │
+                    │ status           │              │
+                    │ created_at       │              │
+                    └──────────────────┘              │
+                                                       │
+                    ┌─────────▼────────┐              │
+                    │     LAPORAN      │              │
+                    │                  │              │
+                    │ id_laporan (PK)  │              │
+                    │ periode          │              │
+                    │ total_pinjam     │              │
+                    │ total_kembali    │              │
+                    │ total_denda      │              │
+                    │ tanggal_laporan  │              │
+                    └──────────────────┘              │
+                                                       │
+                                                       │
+                    ┌─────────────────────────────────┘
+                    │
+                    │ (Relasi: BUKU → PEMINJAMAN)
+                    │ One-to-Many: Satu buku dapat dipinjam berkali-kali
+                    │
+                    └─────────────────────────────────┘
+
+================================================================================
+                            RELASI ANTAR ENTITAS
+================================================================================
+
+1. USERS ──(1:N)──> PEMINJAMAN
+   - Satu user (petugas) dapat membuat banyak peminjaman
+   - Foreign Key: peminjaman.id_user → users.id_user
+
+2. BUKU ──(1:N)──> PEMINJAMAN
+   - Satu buku dapat dipinjam berkali-kali
+   - Foreign Key: peminjaman.id_buku → buku.id_buku
+
+3. SISWA ──(1:N)──> PEMINJAMAN (Optional)
+   - Satu siswa dapat meminjam banyak buku
+   - Foreign Key: peminjaman.id_siswa → siswa.id_siswa
+   - NULL jika peminjam adalah guru
+
+4. GURU ──(1:N)──> PEMINJAMAN (Optional)
+   - Satu guru dapat meminjam banyak buku
+   - Foreign Key: peminjaman.id_guru → guru.id_guru
+   - NULL jika peminjam adalah siswa
+
+5. PEMINJAMAN ──(1:1)──> PENGEMBALIAN
+   - Satu peminjaman memiliki satu record pengembalian
+   - Foreign Key: pengembalian.id_pinjam → peminjaman.id_pinjam
+
+================================================================================
+                            CONSTRAINT & VALIDASI
+================================================================================
+
+- USERS.username: UNIQUE
+- BUKU.kode_buku: UNIQUE
+- SISWA.nis: UNIQUE
+- GURU.nip: UNIQUE
+- PEMINJAMAN: id_siswa dan id_guru tidak boleh keduanya NULL
+- BUKU.stok: >= 0
+- PENGEMBALIAN.denda: >= 0
+
+================================================================================
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.PeminjamanController">
+   <content>
+      <VBox spacing="25.0" style="-fx-background-color: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%); -fx-padding: 30;">
+         <children>
+            <!-- Header Section -->
+            <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-padding: 25 30 25 30; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);">
+               <children>
+                  <Label text="📤" style="-fx-font-size: 32px;" />
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Peminjaman Buku" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);" />
+                        <Label text="Kelola peminjaman buku perpustakaan" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 500;" />
+                     </children>
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnTambah" onAction="#handleTambah" styleClass="button-primary" text="➕ Tambah Peminjaman" style="-fx-background-color: #ffffff; -fx-text-fill: #667eea; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24 12 24; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 10, 0, 0, 0);" />
+               </children>
+            </HBox>
+            
+            <TableView fx:id="peminjamanTable" styleClass="table-view" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <columns>
+                  <TableColumn fx:id="colTanggal" prefWidth="120.0" text="Tanggal Pinjam" />
+                  <TableColumn fx:id="colBuku" prefWidth="200.0" text="Buku" />
+                  <TableColumn fx:id="colAnggota" prefWidth="200.0" text="Anggota" />
+                  <TableColumn fx:id="colJenis" prefWidth="100.0" text="Jenis" />
+                  <TableColumn fx:id="colKembali" prefWidth="120.0" text="Tgl. Kembali" />
+                  <TableColumn fx:id="colStatus" prefWidth="100.0" text="Status" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
+

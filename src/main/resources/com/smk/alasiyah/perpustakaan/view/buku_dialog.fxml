@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.BukuDialogController">
+   <children>
+      <VBox spacing="0.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 5);">
+         <children>
+            <!-- Header -->
+            <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 15 15 0 0; -fx-padding: 20 25 20 25;">
+               <children>
+                  <Label text="📖" style="-fx-font-size: 32px;" />
+                  <VBox spacing="3.0">
+                     <children>
+                        <Label fx:id="titleLabel" text="Tambah Buku" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);" />
+                        <Label text="Masukkan data buku baru" style="-fx-font-size: 13px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 500;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <!-- Content -->
+            <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-border-width: 0;">
+               <content>
+                  <VBox spacing="20.0" style="-fx-padding: 30;">
+                     <children>
+                        <GridPane hgap="15.0" vgap="18.0">
+                           <columnConstraints>
+                              <ColumnConstraints minWidth="140.0" prefWidth="140.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="350.0" prefWidth="350.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Kode Buku *" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="kodeField" GridPane.columnIndex="1" promptText="Masukkan kode buku" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Judul *" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="judulField" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Masukkan judul buku" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Pengarang *" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="pengarangField" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Masukkan nama pengarang" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Penerbit *" GridPane.rowIndex="3" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="penerbitField" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="Masukkan nama penerbit" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Tahun" GridPane.rowIndex="4" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="tahunField" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="Contoh: 2024" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Kategori *" GridPane.rowIndex="5" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="kategoriField" GridPane.columnIndex="1" GridPane.rowIndex="5" promptText="Contoh: Fiksi, Non-Fiksi" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Stok *" GridPane.rowIndex="6" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="stokField" GridPane.columnIndex="1" GridPane.rowIndex="6" promptText="Masukkan jumlah stok" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                              
+                              <Label text="Lokasi Rak *" GridPane.rowIndex="7" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                              <TextField fx:id="lokasiField" GridPane.columnIndex="1" GridPane.rowIndex="7" promptText="Contoh: A1, B2" style="-fx-font-size: 14px; -fx-padding: 12 15 12 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 2; -fx-border-color: #e0e0e0; -fx-background-color: #f8f9fa;" />
+                           </children>
+                        </GridPane>
+                        
+                        <Separator />
+                        
+                        <HBox spacing="12.0" alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="btnBatal" onAction="#handleBatal" text="❌ Batal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 30 12 30; -fx-font-size: 14px; -fx-cursor: hand;" />
+                              <Button fx:id="btnSimpan" onAction="#handleSimpan" styleClass="button-primary" text="💾 Simpan" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 30 12 30; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2); -fx-cursor: hand;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
+

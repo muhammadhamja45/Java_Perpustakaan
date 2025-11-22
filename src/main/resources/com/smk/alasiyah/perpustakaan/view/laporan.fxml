@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.LaporanController">
+   <content>
+      <VBox spacing="25.0" style="-fx-background-color: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%); -fx-padding: 30;">
+         <children>
+            <!-- Header Section -->
+            <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-padding: 25 30 25 30; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);">
+               <children>
+                  <Label text="📊" style="-fx-font-size: 32px;" />
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Laporan" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);" />
+                        <Label text="Generate dan export laporan perpustakaan" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 500;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <!-- Form Section -->
+            <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <children>
+                  <HBox spacing="10.0" alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="📋" style="-fx-font-size: 24px;" />
+                        <Label text="Pilih Periode Laporan" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                     </children>
+                  </HBox>
+                  
+                  <GridPane hgap="15.0" vgap="18.0">
+                     <columnConstraints>
+                        <ColumnConstraints minWidth="180.0" prefWidth="180.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Jenis Laporan *" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                        <ComboBox fx:id="jenisCombo" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-pref-height: 40; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: #e0e0e0;" />
+                        
+                        <Label text="Tanggal" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                        <DatePicker fx:id="tanggalPicker" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-pref-height: 40;" />
+                        
+                        <Label text="Format Export" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                        <ComboBox fx:id="formatCombo" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-pref-height: 40; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: #e0e0e0;" />
+                     </children>
+                  </GridPane>
+                  
+                  <HBox spacing="12.0">
+                     <children>
+                        <Button fx:id="btnGenerate" onAction="#handleGenerate" styleClass="button-primary" text="📊 Generate Laporan" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24 12 24; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2);" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnExport" onAction="#handleExport" styleClass="button-success" text="💾 Export" style="-fx-background-color: linear-gradient(to right, #27ae60 0%, #229954 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24 12 24; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(39, 174, 96, 0.3), 8, 0, 0, 2);" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            
+            <!-- Preview Section -->
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <children>
+                  <HBox spacing="10.0" alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="👁️" style="-fx-font-size: 24px;" />
+                        <Label text="Preview Laporan" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                     </children>
+                  </HBox>
+                  <TableView fx:id="laporanTable" prefHeight="350.0" styleClass="table-view" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12;">
+                     <columns>
+                        <TableColumn fx:id="colNo" prefWidth="50.0" text="No" />
+                        <TableColumn fx:id="colTanggal" prefWidth="120.0" text="Tanggal" />
+                        <TableColumn fx:id="colBuku" prefWidth="200.0" text="Buku" />
+                        <TableColumn fx:id="colAnggota" prefWidth="200.0" text="Anggota" />
+                        <TableColumn fx:id="colStatus" prefWidth="100.0" text="Status" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
+

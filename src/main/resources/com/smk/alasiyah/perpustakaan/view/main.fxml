@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.MainController">
+   <left>
+      <VBox fx:id="sidebar" prefWidth="280.0" styleClass="sidebar" style="-fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 50%, #f093fb 100%); -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.5), 20, 0, 4, 0);">
+         <children>
+            <VBox alignment="CENTER" spacing="12.0" styleClass="sidebar-header">
+               <children>
+                  <Label text="📚" style="-fx-font-size: 48px; -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 15, 0, 0, 0);" />
+                  <Label text="SMK AL-ASIYAH" style="-fx-text-fill: #ffffff; -fx-font-size: 24px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0, 0, 2); -fx-letter-spacing: 1px;" />
+                  <Label text="Perpustakaan" style="-fx-text-fill: rgba(255,255,255,0.95); -fx-font-size: 15px; -fx-font-weight: 600; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="6.0" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets top="25.0" left="18.0" right="18.0" bottom="25.0" />
+               </padding>
+               <children>
+                  <Button fx:id="btnDashboard" onAction="#showDashboard" styleClass="menu-button" text="📊 Dashboard" />
+                  <Button fx:id="btnBuku" onAction="#showBuku" styleClass="menu-button" text="📖 Manajemen Buku" />
+                  <Button fx:id="btnSiswa" onAction="#showSiswa" styleClass="menu-button" text="👨‍🎓 Data Siswa" />
+                  <Button fx:id="btnGuru" onAction="#showGuru" styleClass="menu-button" text="👨‍🏫 Data Guru" />
+                  <Button fx:id="btnPeminjaman" onAction="#showPeminjaman" styleClass="menu-button" text="📤 Peminjaman" />
+                  <Button fx:id="btnPengembalian" onAction="#showPengembalian" styleClass="menu-button" text="📥 Pengembalian" />
+                  <Button fx:id="btnRiwayat" onAction="#showRiwayat" styleClass="menu-button" text="📋 Riwayat Transaksi" />
+                  <Button fx:id="btnLaporan" onAction="#showLaporan" styleClass="menu-button" text="📊 Laporan" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="0.0" style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 100%); -fx-background-radius: 20 0 0 0;">
+               <children>
+                  <VBox spacing="10.0" style="-fx-padding: 25 20 25 20; -fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 20 0 0 0;">
+                     <children>
+                        <Label text="👤 User Info" style="-fx-text-fill: rgba(255,255,255,0.95); -fx-font-size: 13px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);" />
+                        <Label fx:id="userLabel" style="-fx-text-fill: #ffffff; -fx-font-size: 13px; -fx-font-weight: 600; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);" wrapText="true" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnLogout" onAction="#handleLogout" styleClass="logout-button" text="🚪 Logout" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <StackPane fx:id="contentArea" />
+   </center>
+</BorderPane>
+

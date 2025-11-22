@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.RiwayatController">
+   <content>
+      <VBox spacing="25.0" style="-fx-background-color: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%); -fx-padding: 30;">
+         <children>
+            <!-- Header Section -->
+            <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-padding: 25 30 25 30; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);">
+               <children>
+                  <Label text="📋" style="-fx-font-size: 32px;" />
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Riwayat Transaksi" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);" />
+                        <Label text="Lihat riwayat transaksi peminjaman dan pengembalian" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 500;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <!-- Filter Section -->
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);">
+               <children>
+                  <Label text="🔍 Filter & Pencarian" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                  <GridPane hgap="12.0" vgap="12.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
+                        <ColumnConstraints minWidth="120.0" prefWidth="120.0" />
+                        <ColumnConstraints minWidth="120.0" prefWidth="120.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <TextField fx:id="searchField" promptText="🔍 Cari..." GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-padding: 10 15 10 15; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: #e0e0e0;" />
+                        <ComboBox fx:id="statusCombo" promptText="📊 Filter Status" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-pref-height: 40;" />
+                        <DatePicker fx:id="startDatePicker" promptText="📅 Tanggal Mulai" GridPane.columnIndex="2" style="-fx-font-size: 14px; -fx-pref-height: 40;" />
+                        <DatePicker fx:id="endDatePicker" promptText="📅 Tanggal Akhir" GridPane.columnIndex="3" style="-fx-font-size: 14px; -fx-pref-height: 40;" />
+                        <HBox spacing="8.0" GridPane.columnIndex="4">
+                           <children>
+                              <Button fx:id="btnFilter" onAction="#handleFilter" styleClass="button-primary" text="🔍 Filter" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20 10 20; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2);" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="btnRefresh" onAction="#handleRefresh" text="🔄" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px; -fx-min-width: 40px; -fx-pref-width: 40px;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+            
+            <TableView fx:id="riwayatTable" styleClass="table-view" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <columns>
+                  <TableColumn fx:id="colTanggal" prefWidth="120.0" text="Tanggal Pinjam" />
+                  <TableColumn fx:id="colBuku" prefWidth="200.0" text="Buku" />
+                  <TableColumn fx:id="colAnggota" prefWidth="200.0" text="Anggota" />
+                  <TableColumn fx:id="colJenis" prefWidth="100.0" text="Jenis" />
+                  <TableColumn fx:id="colKembali" prefWidth="120.0" text="Tgl. Kembali" />
+                  <TableColumn fx:id="colStatus" prefWidth="100.0" text="Status" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
+
