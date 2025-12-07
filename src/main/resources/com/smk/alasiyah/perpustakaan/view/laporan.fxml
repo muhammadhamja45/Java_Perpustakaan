@@ -45,7 +45,7 @@
                         <Label text="Jenis Laporan *" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
                         <ComboBox fx:id="jenisCombo" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-pref-height: 40; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-width: 1; -fx-border-color: #e0e0e0;" />
                         
-                        <Label text="Tanggal" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
+                        <Label text="Tanggal (opsional untuk Semua Data)" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />
                         <DatePicker fx:id="tanggalPicker" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-pref-height: 40;" />
                         
                         <Label text="Format Export" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #495057;" />

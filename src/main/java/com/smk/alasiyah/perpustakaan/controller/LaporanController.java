@@ -2,6 +2,7 @@ package com.smk.alasiyah.perpustakaan.controller;
 
 import com.smk.alasiyah.perpustakaan.dao.PeminjamanDAO;
 import com.smk.alasiyah.perpustakaan.model.Peminjaman;
+import com.smk.alasiyah.perpustakaan.util.PDFReportGenerator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,7 +40,7 @@ public class LaporanController {
     
     @FXML
     private void initialize() {
-        jenisCombo.getItems().addAll("Harian", "Mingguan", "Bulanan");
+        jenisCombo.getItems().addAll("Semua Data", "Harian", "Mingguan", "Bulanan");
         formatCombo.getItems().addAll("PDF", "Excel");
         formatCombo.getSelectionModel().select(0);
         
@@ -69,10 +70,32 @@ public class LaporanController {
     @FXML
     private void handleGenerate() {
         String jenis = jenisCombo.getSelectionModel().getSelectedItem();
-        LocalDate tanggal = tanggalPicker.getValue();
         
-        if (jenis == null || tanggal == null) {
-            showAlert("Error", "Pilih jenis laporan dan tanggal!", Alert.AlertType.ERROR);
+        if (jenis == null) {
+            showAlert("Error", "Pilih jenis laporan!", Alert.AlertType.ERROR);
+            return;
+        }
+        
+        List<Peminjaman> data;
+        
+        // Jika "Semua Data", tidak perlu tanggal
+        if ("Semua Data".equals(jenis)) {
+            data = peminjamanDAO.getAll();
+            laporanList.clear();
+            laporanList.addAll(data);
+            
+            if (data.isEmpty()) {
+                showAlert("Info", "Tidak ada data transaksi di database.", Alert.AlertType.INFORMATION);
+            } else {
+                showAlert("Sukses", "Berhasil memuat " + data.size() + " transaksi dari database.", Alert.AlertType.INFORMATION);
+            }
+            return;
+        }
+        
+        // Untuk jenis lainnya, tanggal wajib
+        LocalDate tanggal = tanggalPicker.getValue();
+        if (tanggal == null) {
+            showAlert("Error", "Pilih tanggal untuk laporan " + jenis + "!", Alert.AlertType.ERROR);
             return;
         }
         
@@ -96,9 +119,15 @@ public class LaporanController {
                 endDate = tanggal;
         }
         
-        List<Peminjaman> data = peminjamanDAO.filterByDateRange(startDate, endDate);
+        data = peminjamanDAO.filterByDateRange(startDate, endDate);
         laporanList.clear();
         laporanList.addAll(data);
+        
+        if (data.isEmpty()) {
+            showAlert("Info", "Tidak ada data pada periode yang dipilih.", Alert.AlertType.INFORMATION);
+        } else {
+            showAlert("Sukses", "Berhasil memuat " + data.size() + " transaksi.", Alert.AlertType.INFORMATION);
+        }
     }
     
     @FXML
@@ -108,6 +137,8 @@ public class LaporanController {
             return;
         }
         
+        String jenis = jenisCombo.getSelectionModel().getSelectedItem();
+        LocalDate tanggal = tanggalPicker.getValue();
         String format = formatCombo.getSelectionModel().getSelectedItem();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Simpan Laporan");
@@ -122,8 +153,21 @@ public class LaporanController {
         
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
-            // TODO: Implement PDF/Excel export
-            showAlert("Info", "Fitur export akan diimplementasikan menggunakan JasperReports/Apache POI", Alert.AlertType.INFORMATION);
+            try {
+                // Jika "Semua Data" dan tanggal tidak dipilih, gunakan tanggal hari ini
+                LocalDate reportDate = (tanggal != null) ? tanggal : LocalDate.now();
+                
+                if ("PDF".equals(format)) {
+                    PDFReportGenerator.generateLaporanPDF(laporanList, file, jenis, reportDate);
+                    showAlert("Sukses", "Laporan PDF berhasil disimpan!\n\nFile: " + file.getAbsolutePath(), Alert.AlertType.INFORMATION);
+                } else {
+                    PDFReportGenerator.generateExcelReport(laporanList, file, jenis, reportDate);
+                    showAlert("Sukses", "Laporan Excel berhasil disimpan!\n\nFile: " + file.getAbsolutePath(), Alert.AlertType.INFORMATION);
+                }
+            } catch (Exception e) {
+                showAlert("Error", "Gagal membuat laporan: " + e.getMessage(), Alert.AlertType.ERROR);
+                e.printStackTrace();
+            }
         }
     }
     

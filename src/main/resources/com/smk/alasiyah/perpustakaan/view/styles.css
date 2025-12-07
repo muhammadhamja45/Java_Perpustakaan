@@ -218,20 +218,31 @@
 }
 
 /* Login Page Styles */
+.login-bg {
+    -fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 30, 0, 0, 10);
+}
+
 .login-field {
-    -fx-font-size: 15px;
+    -fx-font-size: 14px;
     -fx-padding: 12 15 12 15;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-border-width: 2;
     -fx-border-color: #e0e0e0;
     -fx-background-color: #f8f9fa;
+    -fx-text-fill: #2c3e50;
 }
 
 .login-field:focused {
     -fx-border-color: #667eea;
     -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.2), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 10, 0, 0, 2);
 }
 
 .login-button {
@@ -239,8 +250,7 @@
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-background-radius: 10;
-    -fx-padding: 0;
+    -fx-background-radius: 12;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.4), 15, 0, 0, 5);
 }
@@ -255,6 +265,7 @@
 .login-button:pressed {
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 10, 0, 0, 3);
 }
 
 /* Dialog Input Field Focus */
@@ -290,5 +301,42 @@
 .logout-button:pressed {
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
+}
+
+/* Sidebar Scroll Pane */
+.sidebar-scroll {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.sidebar-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.sidebar-scroll .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8px;
+}
+
+.sidebar-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.sidebar-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.sidebar-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-scroll .scroll-bar:vertical .increment-button,
+.sidebar-scroll .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
