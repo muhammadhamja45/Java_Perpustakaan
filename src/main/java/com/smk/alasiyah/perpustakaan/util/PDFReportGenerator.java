@@ -32,11 +32,32 @@ public class PDFReportGenerator {
             document.open();
             
             // ============ HEADER SECTION ============
-            // Logo placeholder (you can add actual logo later)
-            Paragraph logoText = new Paragraph("📚", FontFactory.getFont(FontFactory.HELVETICA, 48, Font.NORMAL, PRIMARY_COLOR));
-            logoText.setAlignment(Element.ALIGN_CENTER);
-            logoText.setSpacingAfter(10);
-            document.add(logoText);
+            // Logo
+            try {
+                // Try to load logo from resources
+                String logoPath = "src/main/resources/images/image.png";
+                java.io.File logoFile = new java.io.File(logoPath);
+                
+                if (logoFile.exists()) {
+                    Image logo = Image.getInstance(logoPath);
+                    logo.scaleToFit(80, 80); // Resize logo to fit
+                    logo.setAlignment(Element.ALIGN_CENTER);
+                    logo.setSpacingAfter(15);
+                    document.add(logo);
+                } else {
+                    // Fallback to emoji if logo not found
+                    Paragraph logoText = new Paragraph("📚", FontFactory.getFont(FontFactory.HELVETICA, 48, Font.NORMAL, PRIMARY_COLOR));
+                    logoText.setAlignment(Element.ALIGN_CENTER);
+                    logoText.setSpacingAfter(10);
+                    document.add(logoText);
+                }
+            } catch (Exception e) {
+                // Fallback to emoji if error loading logo
+                Paragraph logoText = new Paragraph("📚", FontFactory.getFont(FontFactory.HELVETICA, 48, Font.NORMAL, PRIMARY_COLOR));
+                logoText.setAlignment(Element.ALIGN_CENTER);
+                logoText.setSpacingAfter(10);
+                document.add(logoText);
+            }
             
             // School Name
             Font schoolNameFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, DARK_TEXT);
@@ -192,8 +213,7 @@ public class PDFReportGenerator {
             // ========== LEFT COLUMN: Admin Perpustakaan ==========
             Paragraph adminSignature = new Paragraph();
             adminSignature.setAlignment(Element.ALIGN_CENTER);
-            adminSignature.add(new Chunk("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")), signatureFont));
-            adminSignature.add(Chunk.NEWLINE);
+            // No date for Admin - as per requirement
             adminSignature.add(new Chunk("Admin Perpustakaan", signaturePositionFont));
             adminSignature.add(Chunk.NEWLINE);
             adminSignature.add(Chunk.NEWLINE);
@@ -381,10 +401,9 @@ public class PDFReportGenerator {
             signatureBoldStyle.setFont(signatureBoldFont);
             signatureBoldStyle.setAlignment(org.apache.poi.ss.usermodel.HorizontalAlignment.CENTER);
             
-            // Admin Perpustakaan (Left Column)
+            // Admin Perpustakaan (Left Column) - No date
             org.apache.poi.ss.usermodel.Row adminDateRow = sheet.createRow(rowNum);
-            org.apache.poi.ss.usermodel.Cell adminDateCell = adminDateRow.createCell(1);
-            adminDateCell.setCellValue("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
+            // Skip date cell for admin - leave it empty
             
             org.apache.poi.ss.usermodel.Row adminPositionRow = sheet.createRow(rowNum + 1);
             org.apache.poi.ss.usermodel.Cell adminPositionCell = adminPositionRow.createCell(1);
