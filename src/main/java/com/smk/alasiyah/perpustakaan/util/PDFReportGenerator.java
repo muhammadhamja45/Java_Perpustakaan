@@ -54,7 +54,7 @@ public class PDFReportGenerator {
             
             // Address
             Font addressFont = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.GRAY);
-            Paragraph address = new Paragraph("Tangerang, Banten", addressFont);
+            Paragraph address = new Paragraph("Bogor, Jawa Barat", addressFont);
             address.setAlignment(Element.ALIGN_CENTER);
             address.setSpacingAfter(20);
             document.add(address);
@@ -177,38 +177,59 @@ public class PDFReportGenerator {
             document.add(summary);
             
             // ============ SIGNATURE SECTION ============
+            // Add space before signature
+            document.add(Chunk.NEWLINE);
+            
             PdfPTable signatureTable = new PdfPTable(2);
             signatureTable.setWidthPercentage(100);
             signatureTable.setWidths(new float[]{1f, 1f});
+            signatureTable.setSpacingBefore(20);
             
-            // Empty cell on left
-            PdfPCell emptyCell = new PdfPCell(new Phrase(""));
-            emptyCell.setBorder(Rectangle.NO_BORDER);
-            emptyCell.setMinimumHeight(100f);
-            signatureTable.addCell(emptyCell);
-            
-            // Signature section on right
             Font signatureFont = FontFactory.getFont(FontFactory.HELVETICA, 11, DARK_TEXT);
             Font signatureBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, DARK_TEXT);
+            Font signaturePositionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, PRIMARY_COLOR);
             
-            Paragraph signatureContent = new Paragraph();
-            signatureContent.setAlignment(Element.ALIGN_CENTER);
-            signatureContent.add(new Chunk("Tangerang, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")), signatureFont));
-            signatureContent.add(Chunk.NEWLINE);
-            signatureContent.add(new Chunk("Kepala Sekolah", signatureBoldFont));
-            signatureContent.add(Chunk.NEWLINE);
-            signatureContent.add(Chunk.NEWLINE);
-            signatureContent.add(Chunk.NEWLINE);
-            signatureContent.add(Chunk.NEWLINE);
-            signatureContent.add(new Chunk("\n\n____________________________\n", signatureFont));
-            signatureContent.add(new Chunk("( ..................................................... )\n", signatureFont));
-            signatureContent.add(new Chunk("NIP: ........................................", signatureFont));
+            // ========== LEFT COLUMN: Admin Perpustakaan ==========
+            Paragraph adminSignature = new Paragraph();
+            adminSignature.setAlignment(Element.ALIGN_CENTER);
+            adminSignature.add(new Chunk("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")), signatureFont));
+            adminSignature.add(Chunk.NEWLINE);
+            adminSignature.add(new Chunk("Admin Perpustakaan", signaturePositionFont));
+            adminSignature.add(Chunk.NEWLINE);
+            adminSignature.add(Chunk.NEWLINE);
+            adminSignature.add(Chunk.NEWLINE);
+            adminSignature.add(Chunk.NEWLINE);
+            adminSignature.add(new Chunk("\n\n____________________________\n", signatureFont));
+            adminSignature.add(new Chunk("( ..................................................... )\n", signatureFont));
+            adminSignature.add(new Chunk("NIP: ........................................", signatureFont));
             
-            PdfPCell signatureCell = new PdfPCell(signatureContent);
-            signatureCell.setBorder(Rectangle.NO_BORDER);
-            signatureCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            signatureCell.setPaddingTop(20);
-            signatureTable.addCell(signatureCell);
+            PdfPCell adminCell = new PdfPCell(adminSignature);
+            adminCell.setBorder(Rectangle.NO_BORDER);
+            adminCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            adminCell.setPaddingTop(20);
+            adminCell.setPaddingRight(20);
+            signatureTable.addCell(adminCell);
+            
+            // ========== RIGHT COLUMN: Kepala Sekolah ==========
+            Paragraph kepalaSekolahSignature = new Paragraph();
+            kepalaSekolahSignature.setAlignment(Element.ALIGN_CENTER);
+            kepalaSekolahSignature.add(new Chunk("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")), signatureFont));
+            kepalaSekolahSignature.add(Chunk.NEWLINE);
+            kepalaSekolahSignature.add(new Chunk("Kepala Sekolah", signaturePositionFont));
+            kepalaSekolahSignature.add(Chunk.NEWLINE);
+            kepalaSekolahSignature.add(Chunk.NEWLINE);
+            kepalaSekolahSignature.add(Chunk.NEWLINE);
+            kepalaSekolahSignature.add(Chunk.NEWLINE);
+            kepalaSekolahSignature.add(new Chunk("\n\n____________________________\n", signatureFont));
+            kepalaSekolahSignature.add(new Chunk("( ..................................................... )\n", signatureFont));
+            kepalaSekolahSignature.add(new Chunk("NIP: ........................................", signatureFont));
+            
+            PdfPCell kepalaSekolahCell = new PdfPCell(kepalaSekolahSignature);
+            kepalaSekolahCell.setBorder(Rectangle.NO_BORDER);
+            kepalaSekolahCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            kepalaSekolahCell.setPaddingTop(20);
+            kepalaSekolahCell.setPaddingLeft(20);
+            signatureTable.addCell(kepalaSekolahCell);
             
             document.add(signatureTable);
             
@@ -350,24 +371,53 @@ public class PDFReportGenerator {
             
             // Signature section
             rowNum += 2;
-            org.apache.poi.ss.usermodel.Row signatureDateRow = sheet.createRow(rowNum++);
-            org.apache.poi.ss.usermodel.Cell signatureDateCell = signatureDateRow.createCell(3);
-            signatureDateCell.setCellValue("Tangerang, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
             
-            org.apache.poi.ss.usermodel.Row signaturePositionRow = sheet.createRow(rowNum++);
-            org.apache.poi.ss.usermodel.Cell signaturePositionCell = signaturePositionRow.createCell(3);
-            signaturePositionCell.setCellValue("Kepala Sekolah");
-            signaturePositionCell.setCellStyle(boldStyle);
+            // Create signature header
+            org.apache.poi.ss.usermodel.CellStyle signatureBoldStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font signatureBoldFont = workbook.createFont();
+            signatureBoldFont.setBold(true);
+            signatureBoldFont.setFontHeightInPoints((short) 11);
+            signatureBoldFont.setColor(org.apache.poi.ss.usermodel.IndexedColors.DARK_BLUE.getIndex());
+            signatureBoldStyle.setFont(signatureBoldFont);
+            signatureBoldStyle.setAlignment(org.apache.poi.ss.usermodel.HorizontalAlignment.CENTER);
             
-            rowNum += 4; // Space for signature
+            // Admin Perpustakaan (Left Column)
+            org.apache.poi.ss.usermodel.Row adminDateRow = sheet.createRow(rowNum);
+            org.apache.poi.ss.usermodel.Cell adminDateCell = adminDateRow.createCell(1);
+            adminDateCell.setCellValue("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
             
-            org.apache.poi.ss.usermodel.Row signatureNameRow = sheet.createRow(rowNum++);
-            org.apache.poi.ss.usermodel.Cell signatureNameCell = signatureNameRow.createCell(3);
-            signatureNameCell.setCellValue("( ..................................................... )");
+            org.apache.poi.ss.usermodel.Row adminPositionRow = sheet.createRow(rowNum + 1);
+            org.apache.poi.ss.usermodel.Cell adminPositionCell = adminPositionRow.createCell(1);
+            adminPositionCell.setCellValue("Admin Perpustakaan");
+            adminPositionCell.setCellStyle(signatureBoldStyle);
             
-            org.apache.poi.ss.usermodel.Row signatureNIPRow = sheet.createRow(rowNum++);
-            org.apache.poi.ss.usermodel.Cell signatureNIPCell = signatureNIPRow.createCell(3);
-            signatureNIPCell.setCellValue("NIP: ........................................");
+            // Kepala Sekolah (Right Column)
+            org.apache.poi.ss.usermodel.Cell kepalaDateCell = adminDateRow.createCell(3);
+            kepalaDateCell.setCellValue("Bogor, " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")));
+            
+            org.apache.poi.ss.usermodel.Cell kepalaPositionCell = adminPositionRow.createCell(3);
+            kepalaPositionCell.setCellValue("Kepala Sekolah");
+            kepalaPositionCell.setCellStyle(signatureBoldStyle);
+            
+            rowNum += 6; // Space for signature
+            
+            // Admin Name
+            org.apache.poi.ss.usermodel.Row adminNameRow = sheet.createRow(rowNum);
+            org.apache.poi.ss.usermodel.Cell adminNameCell = adminNameRow.createCell(1);
+            adminNameCell.setCellValue("( ..................................................... )");
+            
+            // Kepala Sekolah Name
+            org.apache.poi.ss.usermodel.Cell kepalaNameCell = adminNameRow.createCell(3);
+            kepalaNameCell.setCellValue("( ..................................................... )");
+            
+            // Admin NIP
+            org.apache.poi.ss.usermodel.Row adminNIPRow = sheet.createRow(rowNum + 1);
+            org.apache.poi.ss.usermodel.Cell adminNIPCell = adminNIPRow.createCell(1);
+            adminNIPCell.setCellValue("NIP: ........................................");
+            
+            // Kepala Sekolah NIP
+            org.apache.poi.ss.usermodel.Cell kepalaNIPCell = adminNIPRow.createCell(3);
+            kepalaNIPCell.setCellValue("NIP: ........................................");
             
             // Auto-size columns
             for (int i = 0; i < headers.length; i++) {
