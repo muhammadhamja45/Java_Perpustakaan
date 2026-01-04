@@ -31,7 +31,22 @@
                         <Button fx:id="btnPeminjaman" onAction="#showPeminjaman" styleClass="menu-button" text="📤 Peminjaman" />
                         <Button fx:id="btnPengembalian" onAction="#showPengembalian" styleClass="menu-button" text="📥 Pengembalian" />
                         <Button fx:id="btnRiwayat" onAction="#showRiwayat" styleClass="menu-button" text="📋 Riwayat Transaksi" />
-                        <Button fx:id="btnLaporan" onAction="#showLaporan" styleClass="menu-button" text="📊 Laporan" />
+                        
+                        <!-- Laporan dengan submenu dropdown -->
+                        <VBox spacing="3.0">
+                           <children>
+                              <Button fx:id="btnLaporan" onAction="#toggleLaporanMenu" styleClass="menu-button" text="📊 Laporan ▼" />
+                              <VBox fx:id="submenuLaporan" spacing="3.0" managed="false" visible="false" style="-fx-padding: 0 0 0 20;">
+                                 <children>
+                                    <Button fx:id="btnLaporanGuru" onAction="#showLaporanGuru" styleClass="submenu-button" text="👨‍🏫 Laporan Data Guru" />
+                                    <Button fx:id="btnLaporanSiswa" onAction="#showLaporanSiswa" styleClass="submenu-button" text="👨‍🎓 Laporan Data Siswa" />
+                                    <Button fx:id="btnLaporanBuku" onAction="#showLaporanBuku" styleClass="submenu-button" text="📖 Laporan Data Buku" />
+                                    <Button fx:id="btnLaporanPeminjaman" onAction="#showLaporanPeminjaman" styleClass="submenu-button" text="📤 Laporan Peminjaman" />
+                                    <Button fx:id="btnLaporanRiwayat" onAction="#showLaporanRiwayat" styleClass="submenu-button" text="📋 Riwayat Peminjaman" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                   

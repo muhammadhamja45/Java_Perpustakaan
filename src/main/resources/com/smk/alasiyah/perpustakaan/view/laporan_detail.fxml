@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smk.alasiyah.perpustakaan.controller.LaporanDetailController">
+   <content>
+      <VBox spacing="25.0" style="-fx-background-color: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%); -fx-padding: 30;">
+         <children>
+            <!-- Header Section -->
+            <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-padding: 25 30 25 30; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 15, 0, 0, 5);">
+               <children>
+                  <Label fx:id="iconLabel" text="📊" style="-fx-font-size: 32px;" />
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label fx:id="titleLabel" text="Laporan Data" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);" />
+                        <Label fx:id="subtitleLabel" text="Generate dan export laporan" style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: 500;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <!-- Form Section -->
+            <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <children>
+                  <Label text="Export Laporan" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                  
+                  <HBox spacing="15.0" alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="Format:" style="-fx-font-size: 14px; -fx-text-fill: #495057; -fx-min-width: 100px;" />
+                        <ComboBox fx:id="formatCombo" prefWidth="200.0" style="-fx-font-size: 14px;" />
+                     </children>
+                  </HBox>
+                  
+                  <HBox spacing="12.0">
+                     <children>
+                        <Button fx:id="btnGenerate" onAction="#handleGenerate" styleClass="button-primary" text="📊 Generate Laporan" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24 12 24; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2);" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnExport" onAction="#handleExport" styleClass="button-success" text="💾 Export" style="-fx-background-color: linear-gradient(to right, #27ae60 0%, #229954 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24 12 24; -fx-font-size: 14px; -fx-effect: dropshadow(gaussian, rgba(39, 174, 96, 0.3), 8, 0, 0, 2);" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            
+            <!-- Preview Section -->
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+               <children>
+                  <Label text="Preview Data" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                  <TableView fx:id="dataTable" styleClass="modern-table" VBox.vgrow="ALWAYS" style="-fx-min-height: 400px;">
+                     <!-- Columns will be added dynamically based on report type -->
+                  </TableView>
+                  <Label fx:id="totalLabel" text="Total: 0 data" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #495057;" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
+
