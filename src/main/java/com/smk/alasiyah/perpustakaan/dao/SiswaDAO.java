@@ -147,6 +147,41 @@ public class SiswaDAO {
         }
     }
     
+    public List<Siswa> filterByDate(java.time.LocalDate date) {
+        List<Siswa> list = new ArrayList<>();
+        String sql = "SELECT * FROM siswa WHERE DATE(created_at) = ? ORDER BY nama";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setDate(1, Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToSiswa(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Siswa> filterByMonthYear(int month, int year) {
+        List<Siswa> list = new ArrayList<>();
+        String sql = "SELECT * FROM siswa WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? ORDER BY nama";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToSiswa(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     private Siswa mapResultSetToSiswa(ResultSet rs) throws SQLException {
         Siswa siswa = new Siswa();
         siswa.setIdSiswa(rs.getInt("id_siswa"));

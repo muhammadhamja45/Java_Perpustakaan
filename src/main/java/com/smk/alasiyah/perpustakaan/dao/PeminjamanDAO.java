@@ -127,6 +127,59 @@ public class PeminjamanDAO {
         return list;
     }
     
+    public List<Peminjaman> filterByDate(LocalDate date) {
+        List<Peminjaman> list = new ArrayList<>();
+        String sql = "SELECT p.*, b.judul as nama_buku, u.nama_lengkap as nama_petugas, " +
+                     "COALESCE(s.nama, g.nama) as nama_anggota, " +
+                     "CASE WHEN p.id_siswa IS NOT NULL THEN 'Siswa' ELSE 'Guru' END as jenis_anggota " +
+                     "FROM peminjaman p " +
+                     "LEFT JOIN buku b ON p.id_buku = b.id_buku " +
+                     "LEFT JOIN users u ON p.id_user = u.id_user " +
+                     "LEFT JOIN siswa s ON p.id_siswa = s.id_siswa " +
+                     "LEFT JOIN guru g ON p.id_guru = g.id_guru " +
+                     "WHERE DATE(p.tgl_pinjam) = ? " +
+                     "ORDER BY p.tgl_pinjam DESC";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setDate(1, Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToPeminjaman(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Peminjaman> filterByMonthYear(int month, int year) {
+        List<Peminjaman> list = new ArrayList<>();
+        String sql = "SELECT p.*, b.judul as nama_buku, u.nama_lengkap as nama_petugas, " +
+                     "COALESCE(s.nama, g.nama) as nama_anggota, " +
+                     "CASE WHEN p.id_siswa IS NOT NULL THEN 'Siswa' ELSE 'Guru' END as jenis_anggota " +
+                     "FROM peminjaman p " +
+                     "LEFT JOIN buku b ON p.id_buku = b.id_buku " +
+                     "LEFT JOIN users u ON p.id_user = u.id_user " +
+                     "LEFT JOIN siswa s ON p.id_siswa = s.id_siswa " +
+                     "LEFT JOIN guru g ON p.id_guru = g.id_guru " +
+                     "WHERE MONTH(p.tgl_pinjam) = ? AND YEAR(p.tgl_pinjam) = ? " +
+                     "ORDER BY p.tgl_pinjam DESC";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToPeminjaman(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     public Peminjaman getById(int id) {
         String sql = "SELECT p.*, b.judul as nama_buku, u.nama_lengkap as nama_petugas, " +
                      "COALESCE(s.nama, g.nama) as nama_anggota, " +

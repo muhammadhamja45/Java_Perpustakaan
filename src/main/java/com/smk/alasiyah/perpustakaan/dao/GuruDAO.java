@@ -147,6 +147,41 @@ public class GuruDAO {
         }
     }
     
+    public List<Guru> filterByDate(java.time.LocalDate date) {
+        List<Guru> list = new ArrayList<>();
+        String sql = "SELECT * FROM guru WHERE DATE(created_at) = ? ORDER BY nama";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setDate(1, Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToGuru(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Guru> filterByMonthYear(int month, int year) {
+        List<Guru> list = new ArrayList<>();
+        String sql = "SELECT * FROM guru WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? ORDER BY nama";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToGuru(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     private Guru mapResultSetToGuru(ResultSet rs) throws SQLException {
         Guru guru = new Guru();
         guru.setIdGuru(rs.getInt("id_guru"));

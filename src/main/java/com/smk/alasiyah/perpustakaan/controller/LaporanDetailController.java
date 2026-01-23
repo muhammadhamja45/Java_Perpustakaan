@@ -8,12 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.Year;
 
 public class LaporanDetailController {
     
@@ -24,10 +26,22 @@ public class LaporanDetailController {
     private ComboBox<String> formatCombo;
     
     @FXML
+    private DatePicker dateFilter;
+    
+    @FXML
+    private ComboBox<String> monthFilter;
+    
+    @FXML
+    private ComboBox<String> yearFilter;
+    
+    @FXML
     private TableView<Object> dataTable;
     
     @FXML
-    private Button btnGenerate, btnExport;
+    private Button btnGenerate, btnExport, btnApplyFilter, btnResetFilter;
+    
+    @FXML
+    private VBox filterSection;
     
     private String jenisLaporan;
     private ObservableList<Object> dataList = FXCollections.observableArrayList();
@@ -42,12 +56,40 @@ public class LaporanDetailController {
     private void initialize() {
         formatCombo.getItems().addAll("PDF", "Excel");
         formatCombo.getSelectionModel().select(0);
+        
+        // Initialize month filter
+        monthFilter.getItems().addAll(
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        );
+        
+        // Initialize year filter (current year and 5 years back)
+        int currentYear = Year.now().getValue();
+        for (int i = currentYear; i >= currentYear - 5; i--) {
+            yearFilter.getItems().add(String.valueOf(i));
+        }
     }
     
     public void setJenisLaporan(String jenis) {
         this.jenisLaporan = jenis;
         updateUIBasedOnJenis();
         setupTableColumns();
+        updateFilterVisibility();
+    }
+    
+    private void updateFilterVisibility() {
+        // Hanya tampilkan filter untuk RIWAYAT
+        boolean isRiwayat = "RIWAYAT".equals(jenisLaporan);
+        if (filterSection != null) {
+            filterSection.setVisible(isRiwayat);
+            filterSection.setManaged(isRiwayat);
+        }
+        // Reset filter jika bukan riwayat
+        if (!isRiwayat) {
+            dateFilter.setValue(null);
+            monthFilter.getSelectionModel().clearSelection();
+            yearFilter.getSelectionModel().clearSelection();
+        }
     }
     
     private void updateUIBasedOnJenis() {
@@ -214,8 +256,34 @@ public class LaporanDetailController {
     
     @FXML
     private void handleGenerate() {
+        loadDataWithFilter();
+    }
+    
+    @FXML
+    private void handleApplyFilter() {
+        loadDataWithFilter();
+    }
+    
+    @FXML
+    private void handleResetFilter() {
+        dateFilter.setValue(null);
+        monthFilter.getSelectionModel().clearSelection();
+        yearFilter.getSelectionModel().clearSelection();
+        loadDataWithFilter();
+    }
+    
+    private void loadDataWithFilter() {
         try {
             dataList.clear();
+            
+            // Hanya gunakan filter untuk RIWAYAT
+            boolean isRiwayat = "RIWAYAT".equals(jenisLaporan);
+            LocalDate selectedDate = isRiwayat ? dateFilter.getValue() : null;
+            String selectedMonth = isRiwayat ? monthFilter.getSelectionModel().getSelectedItem() : null;
+            String selectedYear = isRiwayat ? yearFilter.getSelectionModel().getSelectedItem() : null;
+            
+            boolean hasDateFilter = selectedDate != null;
+            boolean hasMonthYearFilter = selectedMonth != null && selectedYear != null;
             
             switch (jenisLaporan) {
                 case "GURU":
@@ -235,18 +303,37 @@ public class LaporanDetailController {
                     dataList.addAll(peminjamanList);
                     break;
                 case "RIWAYAT":
-                    List<Peminjaman> riwayatList = peminjamanDAO.getAll();
+                    List<Peminjaman> riwayatList;
+                    if (hasDateFilter) {
+                        riwayatList = peminjamanDAO.filterByDate(selectedDate);
+                    } else if (hasMonthYearFilter) {
+                        int month = monthFilter.getSelectionModel().getSelectedIndex() + 1;
+                        int year = Integer.parseInt(selectedYear);
+                        riwayatList = peminjamanDAO.filterByMonthYear(month, year);
+                    } else {
+                        riwayatList = peminjamanDAO.getAll();
+                    }
                     dataList.addAll(riwayatList);
                     break;
             }
             
             dataTable.setItems(dataList);
-            totalLabel.setText("Total: " + dataList.size() + " data");
+            String filterInfo = "";
+            if (hasDateFilter) {
+                filterInfo = " (Filter: " + selectedDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ")";
+            } else if (hasMonthYearFilter) {
+                filterInfo = " (Filter: " + selectedMonth + " " + selectedYear + ")";
+            }
+            totalLabel.setText("Total: " + dataList.size() + " data" + filterInfo);
             
             if (dataList.isEmpty()) {
-                showAlert("Info", "Tidak ada data yang tersedia.", Alert.AlertType.INFORMATION);
+                showAlert("Info", "Tidak ada data yang tersedia" + (hasDateFilter || hasMonthYearFilter ? " untuk filter yang dipilih." : "."), Alert.AlertType.INFORMATION);
             } else {
-                showAlert("Sukses", "Berhasil memuat " + dataList.size() + " data.", Alert.AlertType.INFORMATION);
+                String message = "Berhasil memuat " + dataList.size() + " data";
+                if (hasDateFilter || hasMonthYearFilter) {
+                    message += " dengan filter yang diterapkan";
+                }
+                showAlert("Sukses", message + ".", Alert.AlertType.INFORMATION);
             }
         } catch (Exception e) {
             showAlert("Error", "Gagal memuat data: " + e.getMessage(), Alert.AlertType.ERROR);

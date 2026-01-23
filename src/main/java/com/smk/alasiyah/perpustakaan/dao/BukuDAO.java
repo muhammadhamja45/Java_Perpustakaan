@@ -189,6 +189,41 @@ public class BukuDAO {
         }
     }
     
+    public List<Buku> filterByDate(java.time.LocalDate date) {
+        List<Buku> list = new ArrayList<>();
+        String sql = "SELECT * FROM buku WHERE DATE(created_at) = ? ORDER BY judul";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setDate(1, Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToBuku(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Buku> filterByMonthYear(int month, int year) {
+        List<Buku> list = new ArrayList<>();
+        String sql = "SELECT * FROM buku WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? ORDER BY judul";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToBuku(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     private Buku mapResultSetToBuku(ResultSet rs) throws SQLException {
         Buku buku = new Buku();
         buku.setIdBuku(rs.getInt("id_buku"));
